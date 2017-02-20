@@ -1,0 +1,3 @@
+include ':app', ':zoomcommonlib', ':zoommobilertc'
+project(':zoomcommonlib').projectDir = new File('app/src/zoomcommonlib')
+project(':zoommobilertc').projectDir = new File('app/src/zoommobilertc')
