@@ -1,18 +1,27 @@
 package com.example.com08.wfmeeting;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import us.zoom.sdk.JoinMeetingOptions;
+import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.ZoomApiError;
 import us.zoom.sdk.ZoomAuthenticationError;
 import us.zoom.sdk.ZoomSDK;
 import us.zoom.sdk.ZoomSDKAuthenticationListener;
+
+import static java.security.AccessController.getContext;
 
 /**
  * Created by com08 (15/02/2017).
@@ -21,9 +30,10 @@ import us.zoom.sdk.ZoomSDKAuthenticationListener;
 public class LoginActivity extends Activity implements ZoomSDKAuthenticationListener, View.OnClickListener {
 
     EditText edUsername, edPass;
-    Button btnSignIn;
+    Button btnSignIn, btnJoin;
     View progressBarLogin;
     LinearLayout lnrLogin;
+    private final static String DISPLAY_NAME = "WorldMeeting";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +66,7 @@ public class LoginActivity extends Activity implements ZoomSDKAuthenticationList
         edUsername = (EditText)findViewById(R.id.edUsernameLogin);
         edPass = (EditText)findViewById(R.id.edPassLogin);
         btnSignIn = (Button)findViewById(R.id.btnLogin);
+        btnJoin = (Button)findViewById(R.id.btnJoinWithoutAcc);
         progressBarLogin = findViewById(R.id.lnrProgressLogin);
         lnrLogin = (LinearLayout)findViewById(R.id.lnrLogin);
     }
@@ -63,6 +74,7 @@ public class LoginActivity extends Activity implements ZoomSDKAuthenticationList
     private void initListener()
     {
         btnSignIn.setOnClickListener(this);
+        btnJoin.setOnClickListener(this);
     }
 
     @Override
@@ -71,6 +83,62 @@ public class LoginActivity extends Activity implements ZoomSDKAuthenticationList
             setEnable(false);
             onClickBtnLogin();
         }
+        if (view.getId() == R.id.btnJoinWithoutAcc)
+        {
+            showDialog();
+        }
+    }
+
+    public void showDialog()
+    {
+        LayoutInflater factory = LayoutInflater.from(this);
+        @SuppressLint("InflateParams") final View alertDialogView = factory.inflate(R.layout.join_meeting_dialog, null);
+        final EditText edMeetingID = (EditText) alertDialogView.findViewById(R.id.edMeetingID);
+        final EditText edPass = (EditText) alertDialogView.findViewById(R.id.edMeetingIDPass);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("Please Enter Meeting ID:")
+                .setView(alertDialogView)
+                .setPositiveButton(
+                        android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                            }
+                        })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .create();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+
+        View btnTest = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String meetingNo = edMeetingID.getText().toString().trim();
+                String meetingPassword = edPass.getText().toString().trim();
+
+                if(meetingNo.length() == 0) {
+                    Toast.makeText(getBaseContext(), "You need to enter a meeting number which you want to join.", Toast.LENGTH_LONG).show();
+                }
+
+                ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+                if(!zoomSDK.isInitialized()) {
+                    Toast.makeText(getBaseContext(), "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                MeetingService meetingService = zoomSDK.getMeetingService();
+
+                JoinMeetingOptions opts = new JoinMeetingOptions();
+                int ret = meetingService.joinMeeting(getBaseContext(), meetingNo, DISPLAY_NAME, meetingPassword, opts);
+
+                Log.e("Chau", "onClickBtnLoginUserJoin, ret=" + ret);
+            }
+        });
     }
 
     public void onClickBtnLogin() {

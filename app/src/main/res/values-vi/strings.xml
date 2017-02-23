@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WFMeeting</string>
-    <string name="username">Tên Đăng Nhập…</string>
-    <string name="password">Mật Khẩu…</string>
+    <string name="username">Tên Đăng Nhập</string>
+    <string name="password">Mật Khẩu</string>
     <string name="btn_sign_in">Đăng Nhập</string>
     <string name="hello">Xin Chào!\nVui Lòng Đăng Nhập Bằng\nAccount Của Bạn!</string>
     <string name="loging_in">Xin Vui Lòng Chờ…</string>
+    <string name="start_instant_meeting">Mở Cuộc Họp Khẩn Cấp</string>
+    <string name="join_meeting">Tham Gia Cuộc Họp</string>
+    <string name="schedule_meeting">Lên Lịch Họp</string>
+    <string name="meeting_s_topic">Chủ Đề Meeting</string>
 </resources>

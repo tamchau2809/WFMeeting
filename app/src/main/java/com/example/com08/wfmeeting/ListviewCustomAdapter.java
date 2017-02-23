@@ -45,7 +45,7 @@ class ListviewCustomAdapter extends BaseAdapter
 		ViewHolder holder;
 		if(convertView == null)
 		{
-			convertView = inflater.inflate(R.layout.custom_listview, null);
+			convertView = inflater.inflate(R.layout.custom_lv_menu, null);
 			holder = new ViewHolder();
 			convertView.setTag(holder);
 		}
