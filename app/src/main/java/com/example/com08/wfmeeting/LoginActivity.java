@@ -185,5 +185,6 @@ public class LoginActivity extends Activity implements ZoomSDKAuthenticationList
         edUsername.setEnabled(isEnabled);
         edPass.setEnabled(isEnabled);
         btnSignIn.setEnabled(isEnabled);
+        btnJoin.setEnabled(isEnabled);
     }
 }

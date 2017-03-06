@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.2"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.example.com08.wfmeeting"
         minSdkVersion 21
@@ -29,4 +29,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':zoomcommonlib')
     compile project(':zoommobilertc')
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
 }

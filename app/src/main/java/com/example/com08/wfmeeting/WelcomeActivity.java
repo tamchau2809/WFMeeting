@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import us.zoom.sdk.ZoomApiError;
@@ -19,9 +17,8 @@ import us.zoom.sdk.ZoomSDKInitializeListener;
  * Created by com08 (16/02/2017).
  */
 
-public class WelcomeActivity extends Activity implements Constants, ZoomSDKInitializeListener, ZoomSDKAuthenticationListener,View.OnClickListener {
+public class WelcomeActivity extends Activity implements Constants, ZoomSDKInitializeListener, ZoomSDKAuthenticationListener {
 
-    Button btnSignIn;
     View progressBar;
 
     @Override
@@ -37,7 +34,6 @@ public class WelcomeActivity extends Activity implements Constants, ZoomSDKIniti
 
         setContentView(R.layout.activity_welcome);
         initWidget();
-        initListener();
 
         if(savedInstanceState == null) {
             sdk.initialize(this, APP_KEY, APP_SECRET, WEB_DOMAIN, this);
@@ -46,20 +42,7 @@ public class WelcomeActivity extends Activity implements Constants, ZoomSDKIniti
 
     private void initWidget()
     {
-        btnSignIn = (Button)findViewById(R.id.btnLoginWelcome);
         progressBar = findViewById(R.id.progressPanel);
-    }
-
-    private void initListener()
-    {
-        btnSignIn.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.btnLoginWelcome) {
-            showLoginAct();
-        }
     }
 
     @Override
@@ -68,7 +51,6 @@ public class WelcomeActivity extends Activity implements Constants, ZoomSDKIniti
             showMainAct();
             finish();
         } else {
-            btnSignIn.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
         }
     }
@@ -87,11 +69,9 @@ public class WelcomeActivity extends Activity implements Constants, ZoomSDKIniti
             ZoomSDK sdk = ZoomSDK.getInstance();
             if(sdk.tryAutoLoginZoom() == ZoomApiError.ZOOM_API_ERROR_SUCCESS) {
                 sdk.addAuthenticationListener(this);
-                btnSignIn.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
             } else {
-                btnSignIn.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+                showLoginAct();
             }
         }
     }

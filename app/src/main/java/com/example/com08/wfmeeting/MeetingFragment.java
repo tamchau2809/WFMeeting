@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import us.zoom.sdk.InstantMeetingOptions;
 import us.zoom.sdk.JoinMeetingOptions;
-import us.zoom.sdk.MeetingOptions;
 import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.ZoomSDK;
 
@@ -47,7 +46,7 @@ public class MeetingFragment extends Fragment
         setHasOptionsMenu(false);
         rootView = inflater.inflate(R.layout.activity_meeting, container, false);
 
-        initWiget();
+        initWidget();
         initEvent();
 
         String[] text = {getActivity().getString(R.string.join_meeting), getActivity().getString(R.string.start_instant_meeting), getActivity().getString(R.string.schedule_meeting)};
@@ -58,7 +57,7 @@ public class MeetingFragment extends Fragment
         return rootView;
     }
 
-    public void initWiget()
+    public void initWidget()
     {
         lvOptions = (ListView)rootView.findViewById(R.id.lvOption);
     }
